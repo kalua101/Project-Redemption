@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmlovers - Local Farms to Global Markets</title>
+    
+    <style>
+        /* --- 1. Global Variables & Base Styles --- */
+        :root {
+            --color-primary-green: #388E3C;
+            --color-accent-lime: #A7C957;
+            --color-text-dark: #333;
+            --color-white: #ffffff;
+            --color-background-light: #f5f5f5;
+            --color-footer-bg: #222;
+            --color-border-gray: #ccc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--color-text-dark);
+            line-height: 1.6;
+            background-color: var(--color-white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--color-primary-green);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-padding {
+            padding: 4rem 0;
+        }
+
+        /* --- 2. Header & Navigation Styles --- */
+        .main-header {
+            background-color: var(--color-primary-green);
+            background-image: url('istockphoto-1389516541-612x612.jpg'); 
+            background-size: cover;
+            background-position: center;
+            color: var(--color-text-dark); 
+            padding-bottom: 6rem; 
+            height: 70vh; 
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo a {
+            color: var(--color-white);
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--color-white);
+            background-color: black;
+            border-radius: 8px;
+            padding: 10px;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent-lime);
+        }
+
+        /* --- 3. Header Content & Search Form --- */
+        .header-content {
+            text-align: center;
+            padding-top: 10vh;
+        }
+
+        .header-content h1 {
+            font-size: 3.5rem;
+            color: var(--color-white);
+            margin-bottom: 10px;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            background-color: var(--color-white);
+            border-radius: 8px;
+            padding: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-input {
+            flex-grow: 1; 
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            font-size: 1rem;
+            margin-right: 5px;
+            border-radius: 4px;
+        }
+
+        /* --- 4. Buttons and Cards --- */
+        .btn-primary {
+            background-color: var(--color-accent-lime);
+            color: var(--color-white);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-green);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background-color: var(--color-white);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; 
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* --- 5. Footer Styles --- */
+        .main-footer {
+            background-color: var(--color-footer-bg);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-column { flex: 1; }
+
+        .footer-column h4 { color: var(--color-white); margin-bottom: 1rem; }
+
+        .footer-column ul { list-style: none; padding: 0; }
+
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* --- 6. Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .header-content h1 { font-size: 2.5rem; }
+            .search-form { flex-direction: column; }
+            .search-input { margin-right: 0; margin-bottom: 10px; }
+            .footer-content { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="main.html">AddisFarmers<span style="color: var(--color-accent-lime);">.org</span></a>
+                </div>
+                <div class="nav-links">
+                    <a href="marketplace.html">Marketplace</a>
+                    <a href="login.html" class="btn-primary" style="background-color: transparent; border: 2px solid white;">Log In</a>
+                </div>
+            </nav>
+
+            <div class="header-content">
+                <h1 style="background-color: rgb(90, 161, 90); border-radius: 8px; padding: 10px; max-width: 800px; margin: 0 auto;">From farmers to City market</h1>
+                <p style="color: white; font-weight: bold; text-shadow: 1px 1px 2px black;">Direct, Fair & Transparent</p>
+
+                <form class="search-form" action="marketplace.html" method="GET">
+                    <input type="text" name="item" placeholder="Enter Product..." class="search-input">
+                    <input type="text" name="location" placeholder="Enter Location..." class="search-input">
+                    <button type="submit" class="btn-primary search-button">Search</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="section-padding">
+            <div class="container" style="text-align: center;">
+                <h2>Farm Food Markets From All Over Ethiopia</h2>
+                <p style="max-width: 800px; margin: 1rem auto 3rem;">
+                    AddisFarmers allows you to buy crops, fruits and vegetables directly from farmers and use produce that is as fresh as possible...
+                </p>
+                
+                <div style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 3rem;">
+                    <div><h3>2</h3><p>Number of Branches</p></div>
+                    <div><h3>40</h3><p>Farmers</p></div>
+                    <div><h3>13</h3><p>Product(crops)</p></div>
+                </div>
+
+                <a href="marketplace.html" class="btn-primary">Find products in Marketplace</a>
+            </div>
+        </section>
+        
+        <section class="section-padding" style="background-color: var(--color-background-light);">
+            <div class="container">
+                <h2>Most Recent Added Farms</h2>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <img src="image.png" alt="Farm Photo" class="card-image">
+                        <div class="card-content">
+                            <h3>Teff Farm</h3>
+                            <p>Amhara region - Woldia</p>
+                            <p style="color: var(--color-primary-green); margin-top: 0.5rem;">teff</p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <img src="ll.jpg" alt="Papaya farm" class="card-image">
+                        <div class="card-content">
+                            <h3>Papaya Farm</h3>
+                            <p>Amhara region - Gondar</p>
+                            <p style="color: var(--color-primary-green); margin-top: 0.5rem;">Papaya</p>
+                           
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="344.jpg" alt="Banana Farm" class="card-image">
+                        <div class="card-content">
+                            <h3>Banana Farm</h3>
+                            <p>Southern region - Wolita</p>
+                            <p style="color: var(--color-primary-green); margin-top: 0.5rem;">banana</p>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="marketplace.html" class="btn-primary" style="background-color: transparent; border: 2px solid var(--color-accent-lime); color: var(--color-accent-lime);">Browse All Farms (4410)</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container" style="text-align: center;">
+                <h2>Healthy Food - Healthy Family</h2>
+                <div style="display: flex; justify-content: space-around; gap: 30px; margin-top: 2rem;">
+                    
+                    <div class="card" style="padding: 2rem; flex: 1;">
+                        <h3>Join as a Buyer</h3>
+                        <ul style="text-align: left; margin: 1rem 0 1.5rem 1.5rem;">
+                            <li>All Products from Local Farmers</li>
+                            <li>Superior Food Quality</li>
+                            <li>Money Saving</li>
+                        </ul>
+                        <a href="#" class="btn-primary">Join as a Farmlover</a>
+                    </div>
+                    
+                    <div class="card" style="padding: 2rem; flex: 1;">
+                        <h3>Join as a Farmer</h3>
+                        <ul style="text-align: left; margin: 1rem 0 1.5rem 1.5rem;">
+                            <li>Increased Direct Sales</li>
+                            <li>Enable Pre-Orders</li>
+                            <li>Get what you deserve</li>
+                        </ul>
+                        <a href="#" class="btn-primary">Join as a Farmer</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>About</h4>
+                    <p>AddisFarmers vision is to put farmers in their deserved place...</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Communities</a></li>
+                        <li><a href="#">Suppliers</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Contacts</h4>
+                    <ul>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                &copy; 2025 All rights reserved AddisFarmers.org
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

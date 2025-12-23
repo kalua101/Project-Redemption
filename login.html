@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmlovers - Login</title>
+    
+    <style>
+        :root {
+            --color-primary-green: #388E3C;
+            --color-accent-lime: #A7C957;
+            --color-white: #ffffff;
+            --color-text-dark: #333;
+            --color-background-light: #f5f5f5;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            background-color: var(--color-background-light); 
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+        }
+        
+        .login-card {
+            background-color: var(--color-white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            color: var(--color-primary-green);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        /* --- New Toggle Switch Styles --- */
+        .role-selector {
+            display: flex;
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            padding: 5px;
+        }
+
+        .role-selector label {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .role-selector input[type="radio"] {
+            display: none;
+        }
+
+        /* Changes color when selected */
+        .role-selector input[type="radio"]:checked + span {
+            background-color: var(--color-primary-green);
+            color: white;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            padding: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; 
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: var(--color-primary-green);
+            color: var(--color-white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .links-container { margin-top: 20px; font-size: 0.9rem; }
+        .links-container a { color: var(--color-primary-green); text-decoration: none; }
+    </style>
+</head>
+<body class="login-page">
+
+    <div class="login-card">
+        <h2>Welcome Back</h2>
+        <p style="margin-bottom: 20px;">Please select your role to continue</p>
+        
+        <div class="role-selector">
+            <label>
+                <input type="radio" name="userRole" value="customer" checked>
+                <span>Customer</span>
+            </label>
+            <label>
+                <input type="radio" name="userRole" value="admin">
+                <span>Admin</span>
+            </label>
+        </div>
+
+        <form id="loginForm"> 
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="login-button">Log In</button>
+        </form>
+        
+        <div class="links-container">
+            <p><a href="#">Forgot Password?</a></p>
+            <p>Don't have an account? <a href="#">Sign Up Now</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault(); // Prevent page reload
+
+            // Get selected role
+            const role = document.querySelector('input[name="userRole"]:checked').value;
+            
+            if (role === "admin") {
+                // 1. Grant admin access for admindashboard.html security check
+                localStorage.setItem("adminLoggedIn", "true");
+                
+                // 2. Redirect to dashboard
+                window.location.href = "admindashboard.html"; 
+            } else {
+                // 3. Redirect customer to marketplace
+                window.location.href = "marketplace.html";
+            }
+        };
+    </script>
+
+</body>
+</html>

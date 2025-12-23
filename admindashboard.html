@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AddisFarmers</title>
+    
+    <script>
+        // SECURITY SHIELD: Redirect if not logged in as admin
+        if (localStorage.getItem("adminLoggedIn") !== "true") {
+            alert("Access Denied. Please login as an administrator.");
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <style>
+        :root {
+            --color-primary-green: #388E3C;
+            --color-accent-lime: #A7C957;
+            --color-text-dark: #333;
+            --color-white: #ffffff;
+            --color-background-light: #f5f5f5;
+            --color-danger: #e74c3c;
+            --color-info: #3498db;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--color-background-light);
+            color: var(--color-text-dark);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        .main-header {
+            background-color: var(--color-primary-green);
+            color: white;
+            padding: 20px 0 60px 0;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo a { color: white; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: -40px;
+        }
+
+        .admin-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .admin-card h2 { 
+            color: var(--color-primary-green); 
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--color-accent-lime);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent-lime);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn-primary.update-mode { background-color: var(--color-info); }
+        .btn-primary:hover { opacity: 0.9; }
+
+        #imagePreview {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #ccc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        #imagePreview img { width: 100%; height: 100%; object-fit: cover; }
+
+        .farmer-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .action-btns { display: flex; gap: 8px; }
+        .btn-delete { background: var(--color-danger); color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+        .btn-edit { background: var(--color-info); color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid white;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .market-link {
+            background: white;
+            color: var(--color-primary-green);
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo"><a href="main.html">AddisFarmers Admin</a></div>
+                <div class="nav-links">
+                    <a href="marketplace.html" class="market-link">Marketplace</a>
+                    <button onclick="logout()" class="logout-btn">Logout</button>
+                </div>
+            </nav>
+            <h1>Admin Control Panel</h1>
+            <p>Add, Update, or Remove farmer data</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-grid">
+            
+            <section class="admin-card">
+                <h2 id="formTitle">Add New Farmer</h2>
+                <form id="farmerForm">
+                    <input type="hidden" id="editIndex" value="-1">
+                    
+                    <div class="form-group">
+                        <label>Farm Name</label>
+                        <input type="text" id="farmName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="farmLoc" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Primary Product</label>
+                        <input type="text" id="farmProd" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Setting</label>
+                        <input type="text" id="farmPrice" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <div id="imagePreview"><span>No image selected</span></div>
+                        <input type="file" id="farmImg" accept="image/*">
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-primary">Add to Marketplace</button>
+                    <button type="button" id="cancelBtn" onclick="resetForm()" style="display:none; margin-top:10px; background:none; border:none; color:grey; cursor:pointer; width:100%;">Cancel Edit</button>
+                </form>
+            </section>
+
+            <section class="admin-card">
+                <h2>Manage Added Farmers</h2>
+                <div id="adminFarmerList">
+                    <p style="color: #999; text-align: center; margin-top: 20px;">No custom farmers added yet.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        const farmerForm = document.getElementById('farmerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formTitle = document.getElementById('formTitle');
+        const editIndexInput = document.getElementById('editIndex');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const fileInput = document.getElementById('farmImg');
+        const imagePreview = document.getElementById('imagePreview');
+
+        let currentImageData = ""; // Stores Base64 string
+
+        // --- Handle Image Preview & Storage ---
+        fileInput.onchange = function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    imagePreview.innerHTML = `<img src="${currentImageData}">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // --- 1. Display Farmers ---
+        function displayFarmers() {
+            const listContainer = document.getElementById('adminFarmerList');
+            const farmers = JSON.parse(localStorage.getItem('addedFarmers')) || [];
+            
+            if (farmers.length === 0) {
+                listContainer.innerHTML = '<p style="color: #999; text-align: center; margin-top: 20px;">No custom farmers added yet.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            farmers.forEach((farmer, index) => {
+                const item = document.createElement('div');
+                item.className = 'farmer-list-item';
+                item.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${farmer.img || 'https://via.placeholder.com/50'}" style="width:40px; height:40px; border-radius:4px; object-fit:cover;">
+                        <div>
+                            <strong>${farmer.name}</strong><br>
+                            <small>${farmer.prod} | ${farmer.price}</small>
+                        </div>
+                    </div>
+                    <div class="action-btns">
+                        <button class="btn-edit" onclick="prepareEdit(${index})">Edit</button>
+                        <button class="btn-delete" onclick="deleteFarmer(${index})">Delete</button>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        // --- 2. Save or Update Logic ---
+        farmerForm.onsubmit = function(e) {
+            e.preventDefault();
+            
+            const farmers = JSON.parse(localStorage.getItem('addedFarmers')) || [];
+            const index = parseInt(editIndexInput.value);
+
+            const farmerData = {
+                id: index === -1 ? Date.now() : farmers[index].id,
+                name: document.getElementById('farmName').value,
+                loc: document.getElementById('farmLoc').value,
+                prod: document.getElementById('farmProd').value,
+                price: document.getElementById('farmPrice').value,
+                img: currentImageData // Store the Base64 image
+            };
+
+            if (index === -1) {
+                farmers.push(farmerData);
+                alert("Farmer added!");
+            } else {
+                farmers[index] = farmerData;
+                alert("Farmer information updated!");
+            }
+
+            localStorage.setItem('addedFarmers', JSON.stringify(farmers));
+            resetForm();
+            displayFarmers();
+        };
+
+        // --- 3. Prepare Form for Editing ---
+        function prepareEdit(index) {
+            const farmers = JSON.parse(localStorage.getItem('addedFarmers')) || [];
+            const farmer = farmers[index];
+
+            document.getElementById('farmName').value = farmer.name;
+            document.getElementById('farmLoc').value = farmer.loc;
+            document.getElementById('farmProd').value = farmer.prod;
+            document.getElementById('farmPrice').value = farmer.price;
+            currentImageData = farmer.img || "";
+
+            if(currentImageData) {
+                imagePreview.innerHTML = `<img src="${currentImageData}">`;
+            } else {
+                imagePreview.innerHTML = `<span>No image selected</span>`;
+            }
+            
+            editIndexInput.value = index;
+            formTitle.innerText = "Update Farmer Information";
+            submitBtn.innerText = "Save Changes";
+            submitBtn.classList.add('update-mode');
+            cancelBtn.style.display = "block";
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 4. Reset Form ---
+        function resetForm() {
+            farmerForm.reset();
+            currentImageData = "";
+            imagePreview.innerHTML = "<span>No image selected</span>";
+            editIndexInput.value = "-1";
+            formTitle.innerText = "Add New Farmer";
+            submitBtn.innerText = "Add to Marketplace";
+            submitBtn.classList.remove('update-mode');
+            cancelBtn.style.display = "none";
+        }
+
+        // --- 5. Delete ---
+        function deleteFarmer(index) {
+            if (confirm("Permanently delete this farmer?")) {
+                let farmers = JSON.parse(localStorage.getItem('addedFarmers')) || [];
+                farmers.splice(index, 1);
+                localStorage.setItem('addedFarmers', JSON.stringify(farmers));
+                if(editIndexInput.value == index) resetForm();
+                displayFarmers();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("adminLoggedIn");
+            window.location.href = "login.html";
+        }
+
+        displayFarmers();
+    </script>
+
+</body>
+</html>
